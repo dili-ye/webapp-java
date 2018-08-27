@@ -60,11 +60,13 @@ public class CarAppControllerRunner implements ApplicationRunner {
 					for (long id : ids) {
 						serviceTypes.add(id);
 					}
-				} else if (names != null && names.length > 0) {
+				}
+				if (names != null && names.length > 0) {
 					for (String name : names) {
 						serviceTypes.add(name);
 					}
-				} else if (classes != null && classes.length > 0) {
+				}
+				if (classes != null && classes.length > 0) {
 					for (Class<?> c : classes) {
 						serviceTypes.add(c);
 					}
