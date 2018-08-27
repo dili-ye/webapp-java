@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.cn.car.service.BaseService;
@@ -20,6 +21,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 @Component(value = "serviceContext")
+@Order(50)
 public class ServiceContext implements ApplicationContextAware {
 
 	private static final Logger logger = LoggerFactory.getLogger(ServiceContext.class);

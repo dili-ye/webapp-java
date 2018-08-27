@@ -3,8 +3,11 @@ package com.cn.car.service.impl;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.cn.car.service.BaseService;
@@ -14,12 +17,14 @@ import com.cn.commons.dto.Request;
 import com.cn.commons.dto.Response;
 import com.google.common.collect.Maps;
 
+@Component
 public class BaseServiceImpl implements BaseService {
 
 	private static final Logger logger = LoggerFactory.getLogger(BaseServiceImpl.class);
 
 	protected Map<String, Method> methods = Maps.newHashMap();
-
+	
+	@Resource
 	ServiceJumper jumper;
 
 	@Override

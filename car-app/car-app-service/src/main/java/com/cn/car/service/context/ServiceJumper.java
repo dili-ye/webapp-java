@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
@@ -17,6 +18,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 @Component
+@Order(100) // 尽量后期加载
 public class ServiceJumper {
 
 	private static final Logger logger = LoggerFactory.getLogger(ServiceJumper.class);
