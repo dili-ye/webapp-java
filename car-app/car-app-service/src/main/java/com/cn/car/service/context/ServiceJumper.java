@@ -22,6 +22,11 @@ import java.util.Map;
 
 @Component
 @Order(100) // 尽量后期加载
+/**
+ * 服务层跳转
+ * @author wb-tjf399322
+ *
+ */
 public class ServiceJumper {
 
 	private static final Logger logger = LoggerFactory.getLogger(ServiceJumper.class);
@@ -31,7 +36,14 @@ public class ServiceJumper {
 
 	@Resource
 	FileServiceContext fileServiceContext;
-
+	
+	/**
+	 * 服务层跳转。
+	 * @param service： id、name、serviceClass
+	 * @param methodName：  handlerMethod。value()
+	 * @param request： data
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public Response<?> jump(Object service, String methodName, Request request) {
 		long startTime = System.currentTimeMillis();

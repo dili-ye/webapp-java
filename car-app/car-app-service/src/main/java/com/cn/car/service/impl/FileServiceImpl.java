@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.cn.car.service.FileService;
 import com.cn.commons.annotation.AppService;
 
-@AppService(id = 0, name = "defaultService")
+@AppService(id = 0, name = "default")
 public class FileServiceImpl implements FileService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
