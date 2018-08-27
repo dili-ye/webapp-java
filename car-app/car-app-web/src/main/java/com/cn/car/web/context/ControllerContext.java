@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -15,14 +17,18 @@ import com.google.common.collect.Maps;
 
 @Component(value = "controllerContext")
 public class ControllerContext implements ApplicationContextAware {
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(ControllerContext.class);
 	private ApplicationContext applicationContext;
 	private Map<String, BaseController> beans = Maps.newHashMap();
 
 	@PostConstruct
 	public void init() {
 		beans = applicationContext.getBeansOfType(BaseController.class, false, true);
-		System.out.println("init end");
+		if(beans == null) {
+			beans = Maps.newHashMap();
+		}
+		logger.info("controller init end");
 	}
 	
 	public BaseController getBean(String beanId) {

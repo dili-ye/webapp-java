@@ -39,6 +39,10 @@ public class ServiceContext implements ApplicationContextAware {
 	@PostConstruct
 	public void init() {
 		beans = applicationContext.getBeansOfType(BaseService.class, false, true);
+		if(beans == null) {
+			beans = Maps.newHashMap();
+			return;
+		}
 		beans = beans.entrySet().stream().filter(bean -> {
 			BaseService service = bean.getValue();
 			AppService component = service.getClass().getAnnotation(AppService.class);
@@ -51,6 +55,7 @@ public class ServiceContext implements ApplicationContextAware {
 			logger.info("service :{} enabled is false", service.getClass().getName());
 			return false;
 		}).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+		logger.info("service init end");
 	}
 
 	public BaseService getBean(Object beanType) {
