@@ -17,7 +17,7 @@ import com.cn.commons.dto.Request;
 import com.cn.commons.dto.Response;
 import com.google.common.collect.Maps;
 
-@AppService(id = 0, name = "baseService")
+@AppService(id = 1, name = "baseService")
 public class BaseServiceImpl implements BaseService {
 
 	private static final Logger logger = LoggerFactory.getLogger(BaseServiceImpl.class);
