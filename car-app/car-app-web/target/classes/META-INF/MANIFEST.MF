@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: car-app-web
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: wb-tjf399322
+Built-By: tangjf
 Implementation-Vendor-Id: com.cn.car
-Build-Jdk: 1.8.0_172
+Build-Jdk: 1.8.0_181
 Implementation-URL: http://projects.spring.io/spring-boot/car-app/car-
  app-web/
 Created-By: Maven Integration for Eclipse

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		 <link href="css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+		<link rel="stylesheet" href="css/matrix-style2.css" />
+		<link rel="stylesheet" href="css/matrix-media.css" />
+		<link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
+		  
+
+		<!--<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>-->
+		<style type="text/css">
+			input {
+				width: 100%;
+			}
+			
+			.m_t_10 {
+				margin-top: 10px;
+			}
+			
+			.mytitle {
+				font-size: 16px;
+			}
+			
+			.mytitle span {
+				margin-right: 10px;
+			}
+			select{
+				width: 100%;
+			}
+		</style>
+	</head>
+
+
+	<body>
+		
+			<div id="content">
+				<div id="content-header">
+				<h1>运行概要</h1>
+			</div>
+		<div class="container-fluid">
+
+			<table class="table m_t_10">
+				
+				<tr>
+						<td>时间</td>
+						<td>车次</td>
+						<td>线路别</td>
+						<td>车站</td>
+				</tr>
+				<tr>
+					<td><input type="text" id="dateBox0" / placeholder="支持小时：分选择" class="mytime"></td>
+					<td><input type="text" name=""></td>
+					<td>
+						<select name="" id="sel">
+							<option value="" selected>选择线路别</option>
+							<option value="lh">陇海线</option>
+							<option value="bc">宝成线</option>
+							<option value="bz">宝中线</option>
+							<option value="ya">阳安线</option>
+							<option value="xy">襄渝线</option>
+							<option value="bx">包西线</option>
+							<option value="xk">西康线</option>
+							<option value="xt">咸铜线</option>
+							<option value="tz">太中线</option>
+							<option value="hx">侯西线</option>
+							<option value="nx">宁西线</option>
+							<option value="xp">西平线</option>
+						</select>
+					</td>
+					<td><input type="text" name=""></td>
+				</tr>
+				<tr>
+					<td>到达区间</td>
+					<td>故障现象</td>
+					<td>调度时间</td>
+					<td>调度令</td>
+						
+				</tr>
+				<tr>
+					<td><input type="text" name=""></td>
+					<td>
+						<select name="">
+							<option value="" selected>选择故障现象</option>
+							<option value="">查询无反馈</option>
+							<option value="">风压不一致</option>
+							<option value="">漏风</option>
+						</select>
+					</td>
+					<td><input type="text" id="dateBox1" / placeholder="支持小时：分选择" class="mytime"></td>
+					<td><input type="text" name=""></td>
+				</tr>
+				<tr>
+					<td>列车重新发车时间</td>
+					<td>耽误货车数量</td>
+					<td>耽误客车数量</td>
+				</tr>
+				<tr>
+					<td><input type="text" id="dateBox2" / placeholder="支持小时：分选择" class="mytime"></td>
+					<td>						
+					<select name="num0" id="num">
+							<option value="" selected>耽误货车列数</option>
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+						</select>
+					</td>
+					<td>						
+					<select name="num1" id="num">
+							<option value="" selected>耽误客车列数</option>
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+						</select>
+					</td>
+					
+				</tr>
+
+			</table>
+						<div style="text-align: center;">
+	
+
+<!-- Indicates a successful or positive action -->
+<button type="button" class="btn btn-success" > 保存</button>
+
+<!-- Contextual button for informational alert messages -->
+<button type="button" class="btn btn-info"id="cancle">取消</button>
+
+<!-- Indicates caution should be taken with this action -->
+
+			</div>
+		</div>
+		</div>
+
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/time/required.js"></script>
+			<script type="text/javascript">
+			requirejs(['js/time/DateBox'], function(DateBox) {
+				var m = $(".mytime").length;
+					new DateBox('dateBox0');
+			});
+
+			requirejs(['js/time/DateBox'], function(DateBox) {
+				var m = $(".mytime").length;
+					new DateBox('dateBox1');
+			});
+						requirejs(['js/time/DateBox'], function(DateBox) {
+				var m = $(".mytime").length;
+					new DateBox('dateBox2');
+			});
+
+			$(function(){
+				$("#cancle").click(function(){
+					$("input").val("");
+					$("textarea").val("")
+					$("select").val("0");
+					})
+					});
+
+		</script>
+
+
+	</body>
+
+</html>

@@ -6,7 +6,6 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
-import org.assertj.core.util.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -20,6 +19,7 @@ import com.cn.car.service.context.BaseServiceContext;
 import com.cn.car.web.context.BaseControllerContext;
 import com.cn.car.web.controller.BaseController;
 import com.cn.commons.annotation.ExecuteService;
+import com.google.common.collect.Sets;
 
 @Component
 @Order(11) // after service init end

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Matrix Admin</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="css/matrix-style2.css" />
+<link rel="stylesheet" href="css/matrix-media.css" />
+<link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
+<!--<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>-->
+<style type="text/css">
+input {
+	width: 100%;
+}
+
+.m_t_10 {
+	margin-top: 10px;
+}
+
+.mytitle {
+	font-size: 16px;
+}
+
+.mytitle span {
+	margin-right: 10px;
+}
+</style>
+</head>
+
+<body>
+	<div id="content">
+		<div id="content-header">
+			<h1>中间站作业</h1>
+		</div>
+		<div class="container-fluid">
+			<table class="table m_t_10">
+				<tr>
+					<td>到达中间站时间</td>
+					<td>中间站名称</td>
+					<td>司机</td>
+					<td>汇报情况</td>
+				</tr>
+				<tr>
+					<td><input type="text" id="dateBox0" / placeholder="支持小时：分选择"
+						class="mytime">
+					<td><input type="text" name=""></td>
+					<td><input type="text" name=""></td>
+					<td><input type="text" name=""></td>
+				</tr>
+
+				<tr>
+					<td colspan="2" align="center">是否进行断电复位</td>
+
+				</tr>
+
+				<tr>
+					<td>
+
+						<div class="zjz">
+							<label><input type="radio" name="duandianoptionsRadios"
+								id="optionsRadios1" value="option" checked>&nbsp;&nbsp;是</label>
+						</div>
+					</td>
+					<td>
+						<div class="zjz">
+							<label><input type="radio" name="duandianoptionsRadios"
+								id="" value="option1">&nbsp;&nbsp;否</label>
+						</div>
+					</td>
+
+				</tr>
+			</table>
+			<div class="resetcon">
+				<h4 class="mytitle" style="font-size: 13px;">断电复位操作情况</h4>
+				<table class="table m_t_10">
+					<tr>
+						<td>
+							<div class="#">复位次数</div>
+						</td>
+						<td style="text-align: center;">是否恢复</td>
+
+					</tr>
+					<tr>
+
+						<td>
+							<div class="#">
+								<label> <input type="number" name="resetnum"
+									id="resetnum" placeholder="次数最大为3" max="3" min="1">
+								</label>
+							</div>
+						</td>
+						<td style="text-align: center;">
+							<form class="form-inline">
+
+								<label> <input type="radio" name="inlineRadioOptions"
+									id="inlineRadio1" value="option1">&nbsp;&nbsp;是
+								</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label>
+									<input type="radio" name="inlineRadioOptions" id="inlineRadio2"
+									value="option2">&nbsp;&nbsp;否
+								</label>
+							</form>
+						</td>
+					</tr>
+				</table>
+				<table class="table m_t_10" id="resetcon_table">
+				</table>
+
+
+			</div>
+			<div style="text-align: center;">
+
+
+				<!-- Indicates a successful or positive action -->
+				<button type="button" class="btn btn-success">保存</button>
+
+				<!-- Contextual button for informational alert messages -->
+				<button type="button" class="btn btn-info" id="cancle">取消</button>
+
+				<!-- Indicates caution should be taken with this action -->
+
+			</div>
+		</div>
+	</div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/time/required.js"></script>
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+							inintTime();
+							$(".zjz label").click(
+									function() {
+										if ($("#optionsRadios1")
+												.attr("checked") == "checked") {
+											$(".resetcon").show();
+										} else {
+											$(".resetcon").hide();
+										}
+									});
+
+							var html = '<tr><td>第1次恢复时间</td><td><input type="text" id="dateBox1" / placeholder="支持小时：分选择" class="mytime"></td></tr>';
+							var html1 = '<tr><td>第1次恢复时间</td><td><input type="text" id="dateBox1" / placeholder="支持小时：分选择" class="mytime"></td></tr><tr><td>第2次恢复时间</td><td><input type="text" id="dateBox2" / placeholder="支持小时：分选择" class="mytime"></td></tr>';
+							var html2 = '<tr><td>第1次恢复时间</td><td><input type="text" id="dateBox1" / placeholder="支持小时：分选择" class="mytime"></td></tr><tr><td>第2次恢复时间</td><td><input type="text" id="dateBox2" / placeholder="支持小时：分选择" class="mytime"></td></tr><td>第3次恢复时间</td><td><input type="text" id="dateBox3" / placeholder="支持小时：分选择" class="mytime"></td></tr>';
+
+							var num = "";
+							$('#resetnum').bind('keyup', function(event) {
+								//回车执行查询
+								if (event.keyCode == "13") {
+									num = $.trim($("#resetnum").val());
+									$("#resetcon_table").html("");
+									if (num == 1) {
+										$("#resetcon_table").append(html);
+										inintTime();
+									} else if (num == 2) {
+										$("#resetcon_table").append(html1);
+										inintTime();
+									} else {
+										$("#resetcon_table").append(html2);
+										inintTime();
+									}
+
+								}
+							});
+						})
+	</script>
+	<script type="text/javascript">
+		function inintTime() {
+			requirejs([ 'js/time/DateBox' ], function(DateBox) {
+				var m = $(".mytime").length;
+				for (var i = 0; i < m; i++) {
+					new DateBox('dateBox' + i);
+				}
+			});
+		}
+
+		$(function() {
+			$("#cancle").click(
+					function() {
+						$("input").val("");
+						$("textarea").val("")
+						$("select").val("0");
+						$('input:radio[name="duandianoptionsRadios"]')
+								.removeAttr('checked');
+						$('input:radio[name="inlineRadioOptions"]').removeAttr(
+								'checked');
+					})
+		});
+	</script>
+</body>
+
+</html>
