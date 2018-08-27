@@ -20,7 +20,9 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.cn.car.service.BaseService;
-import com.cn.car.service.context.ServiceContext;
+import com.cn.car.service.FileService;
+import com.cn.car.service.context.BaseServiceContext;
+import com.cn.car.service.context.FileServiceContext;
 import com.cn.commons.annotation.HandlerMethod;
 import com.google.common.collect.Maps;
 
@@ -38,57 +40,77 @@ public class CarAppServiceRunner implements ApplicationRunner {
 	private static final String BASE_METHOD_SERVICE = "service";
 
 	@Resource
-	ServiceContext serviceContext;
+	BaseServiceContext serviceContext;
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		if (logger.isDebugEnabled()) {
 			logger.debug(JSON.toJSONString(args));
 		}
-		initService();
+		initBaseService();
+		initFileService();
 	}
 
-	protected void initService() {
+	protected void initBaseService() {
 		Collection<BaseService> beans = serviceContext.getBeans(null);
 		for (BaseService service : beans) {
-			Class<?> clazz = service.getClass();
-			String suffix = null;
-			Predicate<Method> p = m -> m.getAnnotation(Override.class) != null
-					|| m.getAnnotation(HandlerMethod.class) != null && !BASE_METHOD_CANSERVICE.equals(m.getName())
-							&& !BASE_METHOD_SERVICE.equals(m.getName());
-			Map<String, Method> methodMap = Maps.newHashMap();
-			for (; clazz != null; clazz = clazz.getSuperclass()) {
-				Method[] ms = clazz.getDeclaredMethods();
-				HandlerMethod mapping = clazz.getAnnotation(HandlerMethod.class);
-				if (mapping != null && !"".equals(mapping.value())) {
-					suffix = mapping.value();
-				}
-				if (ms != null && ms.length > 0) {
-					List<Method> list = Arrays.asList(ms).stream().filter(p).collect(Collectors.toList());
-					for (Method m : list) {
-						HandlerMethod annotation = m.getAnnotation(HandlerMethod.class);
-						if (annotation != null) {
-							String key = suffix == null ? annotation.value()
-									: suffix + MAPPING_SEPARATOR + annotation.value();
-							methodMap.put(key, m);
-						}
+			assignMethods(service);
+		}
+	}
+
+	@Resource
+	FileServiceContext fileServiceContext;
+
+	protected void initFileService() {
+		Collection<FileService> beans = fileServiceContext.getBeans(null);
+		for (FileService service : beans) {
+			assignMethods(service);
+		}
+	}
+	
+	/**
+	 * 给service对象赋值
+	 * @param service
+	 */
+	private void assignMethods(Object service) {
+		Class<?> clazz = service.getClass();
+		String suffix = null;
+		Predicate<Method> p = m -> m.getAnnotation(Override.class) != null
+				|| m.getAnnotation(HandlerMethod.class) != null && !BASE_METHOD_CANSERVICE.equals(m.getName())
+						&& !BASE_METHOD_SERVICE.equals(m.getName());
+		Map<String, Method> methodMap = Maps.newHashMap();
+		for (; clazz != null; clazz = clazz.getSuperclass()) {
+			Method[] ms = clazz.getDeclaredMethods();
+			HandlerMethod mapping = clazz.getAnnotation(HandlerMethod.class);
+			if (mapping != null && !"".equals(mapping.value())) {
+				suffix = mapping.value();
+			}
+			if (ms != null && ms.length > 0) {
+				List<Method> list = Arrays.asList(ms).stream().filter(p).collect(Collectors.toList());
+				for (Method m : list) {
+					HandlerMethod annotation = m.getAnnotation(HandlerMethod.class);
+					if (annotation != null) {
+						String key = suffix == null ? annotation.value()
+								: suffix + MAPPING_SEPARATOR + annotation.value();
+						methodMap.put(key, m);
 					}
 				}
 			}
+		}
 
-			for (clazz = service.getClass(); clazz != null; clazz = clazz.getSuperclass()) {
-				try {
-					Field declaredField = clazz.getDeclaredField(METHODS_NAME);
-					declaredField.setAccessible(true);
-					declaredField.set(service, methodMap);
-					declaredField.setAccessible(false);
-					logger.info("methods init success, class is :{} , methods size :{}", service.getClass().getName(),
-							methodMap.size());
-					break;
-				} catch (Exception e) {
-					logger.info("methods init error, class is :{}", service.getClass().getName());
-				}
+		for (clazz = service.getClass(); clazz != null; clazz = clazz.getSuperclass()) {
+			try {
+				Field declaredField = clazz.getDeclaredField(METHODS_NAME);
+				declaredField.setAccessible(true);
+				declaredField.set(service, methodMap);
+				declaredField.setAccessible(false);
+				logger.info("methods init success, class is :{} , methods size :{}", service.getClass().getName(),
+						methodMap.size());
+				break;
+			} catch (Exception e) {
+				logger.info("methods init error, class is :{}", service.getClass().getName());
 			}
 		}
+
 	}
 }

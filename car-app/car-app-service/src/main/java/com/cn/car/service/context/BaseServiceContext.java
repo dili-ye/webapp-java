@@ -20,11 +20,11 @@ import com.cn.commons.annotation.AppService;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-@Component(value = "serviceContext")
+@Component(value = "baseServiceContext")
 @Order(50)
-public class ServiceContext implements ApplicationContextAware {
+public class BaseServiceContext implements ApplicationContextAware {
 
-	private static final Logger logger = LoggerFactory.getLogger(ServiceContext.class);
+	private static final Logger logger = LoggerFactory.getLogger(BaseServiceContext.class);
 
 	private ApplicationContext applicationContext;
 

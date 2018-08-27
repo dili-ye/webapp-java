@@ -2,10 +2,11 @@ package com.cn.car.web.init;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.assertj.core.util.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -15,11 +16,10 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.cn.car.service.BaseService;
-import com.cn.car.service.context.ServiceContext;
+import com.cn.car.service.context.BaseServiceContext;
 import com.cn.car.web.context.ControllerContext;
 import com.cn.car.web.controller.BaseController;
 import com.cn.commons.annotation.ExecuteService;
-import com.google.common.collect.Lists;
 
 @Component
 @Order(11) // after service init end
@@ -33,51 +33,33 @@ public class CarAppControllerRunner implements ApplicationRunner {
 	ControllerContext controllerContext;
 
 	@Resource
-	ServiceContext serviceContext;
+	BaseServiceContext serviceContext;
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		if (logger.isDebugEnabled()) {
 			logger.debug(JSON.toJSONString(args));
 		}
-		initController();
+		initBaseController();
 	}
 
 	/**
 	 * 初始化Controller中的service
 	 */
-	protected void initController() {
+	protected void initBaseController() {
 		Collection<BaseController> beans = controllerContext.getBeans();
 		for (BaseController controller : beans) {
 			Class<?> clazz = controller.getClass();
-			List<Object> serviceTypes = Lists.newArrayList();
-			ExecuteService annotation = clazz.getAnnotation(ExecuteService.class);
-			if (annotation != null) {
-				long[] ids = annotation.execiteIds();
-				Class<?>[] classes = annotation.executeClasses();
-				String[] names = annotation.executeNames();
-				if (ids != null && ids.length > 0) {
-					for (long id : ids) {
-						serviceTypes.add(id);
-					}
-				}
-				if (names != null && names.length > 0) {
-					for (String name : names) {
-						serviceTypes.add(name);
-					}
-				}
-				if (classes != null && classes.length > 0) {
-					for (Class<?> c : classes) {
-						serviceTypes.add(c);
-					}
-				}
-			}
+			ExecuteService controllerExecutors = clazz.getAnnotation(ExecuteService.class);
+			Set<Object> serviceTypes = generateServiceTypes(controllerExecutors);
 			if (serviceTypes.size() == 0) {
 				continue;
 			}
 			for (; clazz != null; clazz = clazz.getSuperclass()) {
 				try {
 					Field declaredField = clazz.getDeclaredField(SERVICES_NAME);
+					// 添加field上的注解的service
+					serviceTypes.addAll(generateServiceTypes(declaredField.getAnnotation(ExecuteService.class)));
 					declaredField.setAccessible(true);
 					declaredField.set(controller,
 							serviceContext.getBeans(serviceTypes.toArray()).toArray(new BaseService[] {}));
@@ -90,5 +72,31 @@ public class CarAppControllerRunner implements ApplicationRunner {
 				}
 			}
 		}
+	}
+
+	private Set<Object> generateServiceTypes(ExecuteService executors) {
+		Set<Object> serviceTypes = Sets.newHashSet();
+		if (executors == null) {
+			return serviceTypes;
+		}
+		long[] ids = executors.execiteIds();
+		Class<?>[] classes = executors.executeClasses();
+		String[] names = executors.executeNames();
+		if (ids != null && ids.length > 0) {
+			for (long id : ids) {
+				serviceTypes.add(id);
+			}
+		}
+		if (names != null && names.length > 0) {
+			for (String name : names) {
+				serviceTypes.add(name);
+			}
+		}
+		if (classes != null && classes.length > 0) {
+			for (Class<?> c : classes) {
+				serviceTypes.add(c);
+			}
+		}
+		return serviceTypes;
 	}
 }

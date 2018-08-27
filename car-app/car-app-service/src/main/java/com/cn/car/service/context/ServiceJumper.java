@@ -24,7 +24,7 @@ public class ServiceJumper {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceJumper.class);
 
 	@Resource
-	ServiceContext serviceContext;
+	BaseServiceContext serviceContext;
 
 	@SuppressWarnings("unchecked")
 	public Response<?> jump(Class<BaseService> service, String methodName, Request request) {

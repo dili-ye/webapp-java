@@ -5,12 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.TYPE)
+@Target({ ElementType.TYPE, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExecuteService {
 	Class<?>[] executeClasses() default {};
 
 	String[] executeNames() default {};
-	
+
 	long[] execiteIds() default {};
 }
