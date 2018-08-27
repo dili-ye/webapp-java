@@ -30,12 +30,13 @@ public class FileController {
 	public void uploadFile(@PathVariable String serviceType, @PathVariable String actionType,
 			HttpServletRequest request, HttpServletResponse response) {
 		jumper.jump(serviceType, actionType, request, response);
-		logger.info("service end");
+		logger.info("upload end");
 	}
 
 	@RequestMapping(value = "/download/{serviceType}/{actionType}", method = { RequestMethod.POST, RequestMethod.GET })
 	public void downloadFile(@PathVariable String serviceType, @PathVariable String actionType,
 			HttpServletRequest request, HttpServletResponse response) {
 		jumper.jump(serviceType, actionType, request, response);
+		logger.info("download end");
 	}
 }

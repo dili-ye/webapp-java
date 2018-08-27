@@ -17,7 +17,7 @@ import com.alibaba.fastjson.JSON;
 import com.cn.webapp.commons.annotation.ExecuteService;
 import com.cn.webapp.service.BaseService;
 import com.cn.webapp.service.context.BaseServiceContext;
-import com.cn.webapp.web.context.BaseControllerContext;
+import com.cn.webapp.web.context.ControllerContext;
 import com.cn.webapp.web.controller.BaseController;
 import com.google.common.collect.Sets;
 
@@ -30,7 +30,7 @@ public class WebappControllerRunner implements ApplicationRunner {
 	private static final Logger logger = LoggerFactory.getLogger(WebappControllerRunner.class);
 
 	@Resource
-	BaseControllerContext controllerContext;
+	ControllerContext controllerContext;
 
 	@Resource
 	BaseServiceContext serviceContext;
