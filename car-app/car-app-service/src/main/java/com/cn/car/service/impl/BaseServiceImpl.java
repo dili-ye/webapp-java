@@ -57,7 +57,7 @@ public class BaseServiceImpl implements BaseService {
 	}
 
 	@Override
-	public Response<?> jumpService(Class<BaseService> serviceClass, String method, Request request) {
-		return jumper.jump(serviceClass, method, request);
+	public Response<?> jumpService(Object service, String method, Request request) {
+		return jumper.jump(service, method, request);
 	}
 }

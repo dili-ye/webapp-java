@@ -23,5 +23,5 @@ public interface BaseService {
 	/**
 	 * 用于service层级跳转
 	 */
-	Response<?> jumpService(Class<BaseService> serviceClass, String method, Request request);
+	Response<?> jumpService(Object service, String method, Request request);
 }

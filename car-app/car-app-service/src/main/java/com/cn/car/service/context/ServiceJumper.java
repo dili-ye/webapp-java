@@ -33,7 +33,7 @@ public class ServiceJumper {
 	FileServiceContext fileServiceContext;
 
 	@SuppressWarnings("unchecked")
-	public Response<?> jump(Class<BaseService> service, String methodName, Request request) {
+	public Response<?> jump(Object service, String methodName, Request request) {
 		long startTime = System.currentTimeMillis();
 		BaseService bean = serviceContext.getBean(service);
 		try {
