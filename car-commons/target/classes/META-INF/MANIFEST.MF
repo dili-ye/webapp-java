@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: car-app-commons
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: wb-tjf399322
+Implementation-Vendor-Id: com.cn.commons
+Build-Jdk: 1.8.0_172
+Implementation-URL: http://projects.spring.io/spring-boot/car-app-comm
+ ons/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
