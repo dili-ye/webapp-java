@@ -42,7 +42,7 @@ public class ServiceJumper {
 					logger.info("jump error:{}", JSON.toJSONString(e));
 				}
 			}
-			logger.info("can't execute method, cause there is no method name:{} is methos", methodName);
+			logger.info("can't execute method, cause there is no method name:{} in methods", methodName);
 		} catch (Exception e) {
 			logger.info("can't jump service, cause cannot get field:{}", METHODS_NAME);
 		}
