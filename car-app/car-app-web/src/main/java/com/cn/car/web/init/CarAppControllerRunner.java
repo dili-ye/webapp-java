@@ -52,14 +52,15 @@ public class CarAppControllerRunner implements ApplicationRunner {
 			Class<?> clazz = controller.getClass();
 			ExecuteService controllerExecutors = clazz.getAnnotation(ExecuteService.class);
 			Set<Object> serviceTypes = generateServiceTypes(controllerExecutors);
-			if (serviceTypes.size() == 0) {
-				continue;
-			}
 			for (; clazz != null; clazz = clazz.getSuperclass()) {
 				try {
 					Field declaredField = clazz.getDeclaredField(SERVICES_NAME);
 					// 添加field上的注解的service
 					serviceTypes.addAll(generateServiceTypes(declaredField.getAnnotation(ExecuteService.class)));
+					// 找不到执行的service就继续遍历
+					if(serviceTypes.size() == 0) {
+						continue;
+					}
 					declaredField.setAccessible(true);
 					declaredField.set(controller,
 							serviceContext.getBeans(serviceTypes.toArray()).toArray(new BaseService[] {}));
