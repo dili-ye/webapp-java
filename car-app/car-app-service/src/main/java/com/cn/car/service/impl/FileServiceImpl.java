@@ -1,35 +1,32 @@
 package com.cn.car.service.impl;
 
-import java.lang.reflect.Method;
-import java.util.Map;
-
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.cn.car.service.FileService;
-import com.google.common.collect.Maps;
+import com.cn.car.service.context.ServiceJumper;
 
+@Service
 public class FileServiceImpl implements FileService {
-
+	
+	@Resource
+	ServiceJumper jumper;
+	
 	private static final Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
-
-	protected Map<String, Method> methods = Maps.newHashMap();
 
 	@Override
 	public boolean canService(String actionType, HttpServletRequest request, HttpServletResponse response) {
-		return methods.containsKey(actionType);
+		return true;
 	}
 
 	@Override
 	public void service(String actionType, HttpServletRequest request, HttpServletResponse response) {
-		Method method = methods.get(actionType);
-		try {
-			method.invoke(this, actionType, request, response);
-		} catch (Exception e) {
-			logger.error("service error !!! actionType is:{}", actionType);
-		}
+		String serviceName = request.getParameter("serviceName");
+		jumper.jump(serviceName, actionType, request, response);
 	}
 }

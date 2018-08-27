@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSON;
 import com.cn.car.service.BaseService;
 import com.cn.car.service.context.BaseServiceContext;
-import com.cn.car.web.context.ControllerContext;
+import com.cn.car.web.context.BaseControllerContext;
 import com.cn.car.web.controller.BaseController;
 import com.cn.commons.annotation.ExecuteService;
 
@@ -30,7 +30,7 @@ public class CarAppControllerRunner implements ApplicationRunner {
 	private static final Logger logger = LoggerFactory.getLogger(CarAppControllerRunner.class);
 
 	@Resource
-	ControllerContext controllerContext;
+	BaseControllerContext controllerContext;
 
 	@Resource
 	BaseServiceContext serviceContext;
@@ -41,6 +41,13 @@ public class CarAppControllerRunner implements ApplicationRunner {
 			logger.debug(JSON.toJSONString(args));
 		}
 		initBaseController();
+	}
+	
+	/**
+	 * init fileController
+	 */
+	protected void initFileController() {
+		
 	}
 
 	/**
@@ -58,7 +65,7 @@ public class CarAppControllerRunner implements ApplicationRunner {
 					// 添加field上的注解的service
 					serviceTypes.addAll(generateServiceTypes(declaredField.getAnnotation(ExecuteService.class)));
 					// 找不到执行的service就继续遍历
-					if(serviceTypes.size() == 0) {
+					if (serviceTypes.size() == 0) {
 						continue;
 					}
 					declaredField.setAccessible(true);

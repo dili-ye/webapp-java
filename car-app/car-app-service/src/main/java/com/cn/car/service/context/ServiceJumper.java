@@ -1,6 +1,8 @@
 package com.cn.car.service.context;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.cn.car.service.BaseService;
+import com.cn.car.service.FileService;
 import com.cn.commons.dto.Request;
 import com.cn.commons.dto.Response;
 import static com.cn.car.service.init.CarAppServiceRunner.METHODS_NAME;
@@ -26,6 +29,9 @@ public class ServiceJumper {
 	@Resource
 	BaseServiceContext serviceContext;
 
+	@Resource
+	FileServiceContext fileServiceContext;
+
 	@SuppressWarnings("unchecked")
 	public Response<?> jump(Class<BaseService> service, String methodName, Request request) {
 		long startTime = System.currentTimeMillis();
@@ -35,7 +41,7 @@ public class ServiceJumper {
 			Map<String, Method> methods = Map.class.cast(field.get(bean));
 			if (methods.containsKey(methodName)) {
 				try {
-					Response<?> response = (Response<?>)methods.get(methodName).invoke(bean, request);
+					Response<?> response = (Response<?>) methods.get(methodName).invoke(bean, request);
 					response.setTime(System.currentTimeMillis() - startTime);
 					logger.info("jump response:{}", JSON.toJSONString(response));
 					return response;
@@ -48,5 +54,18 @@ public class ServiceJumper {
 			logger.info("can't jump service, cause cannot get field:{}", METHODS_NAME);
 		}
 		return Response.of(199, System.currentTimeMillis() - startTime);
+	}
+	
+	/**
+	 * 用于fileService的跳转
+	 * @param service
+	 * @param actionType
+	 * @param request
+	 * @param response
+	 */
+	public void jump(Object serviceName, String actionType, HttpServletRequest request,
+			HttpServletResponse response) {
+		FileService bean = fileServiceContext.getBean(serviceName);
+		bean.service(actionType, request, response);
 	}
 }

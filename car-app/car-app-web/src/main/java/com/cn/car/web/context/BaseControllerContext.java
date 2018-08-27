@@ -16,9 +16,9 @@ import com.cn.car.web.controller.BaseController;
 import com.google.common.collect.Maps;
 
 @Component(value = "controllerContext")
-public class ControllerContext implements ApplicationContextAware {
+public class BaseControllerContext implements ApplicationContextAware {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ControllerContext.class);
+	private static final Logger logger = LoggerFactory.getLogger(BaseControllerContext.class);
 	private ApplicationContext applicationContext;
 	private Map<String, BaseController> beans = Maps.newHashMap();
 
