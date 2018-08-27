@@ -1,4 +1,4 @@
-package com.cn.car.context;
+package com.cn.car.web.context;
 
 import java.util.Collection;
 import java.util.Map;
@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import com.cn.car.controller.BaseController;
+import com.cn.car.web.controller.BaseController;
 import com.google.common.collect.Maps;
 
 @Component(value = "controllerContext")
