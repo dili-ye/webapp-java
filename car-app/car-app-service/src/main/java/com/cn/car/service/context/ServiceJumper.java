@@ -35,9 +35,10 @@ public class ServiceJumper {
 			Map<String, Method> methods = Map.class.cast(field.get(bean));
 			if (methods.containsKey(methodName)) {
 				try {
-					Object invoke = methods.get(methodName).invoke(bean, request);
-					logger.info("jump response:{}", JSON.toJSONString(invoke));
-					return (Response<?>) invoke;
+					Response<?> response = (Response<?>)methods.get(methodName).invoke(bean, request);
+					response.setTime(System.currentTimeMillis() - startTime);
+					logger.info("jump response:{}", JSON.toJSONString(response));
+					return response;
 				} catch (Exception e) {
 					logger.info("jump error:{}", JSON.toJSONString(e));
 				}

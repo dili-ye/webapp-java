@@ -7,17 +7,17 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.cn.car.service.BaseService;
 import com.cn.car.service.context.ServiceJumper;
+import com.cn.commons.annotation.AppService;
 import com.cn.commons.constants.ServerConstants;
 import com.cn.commons.dto.Request;
 import com.cn.commons.dto.Response;
 import com.google.common.collect.Maps;
 
-@Component
+@AppService(id = 0, name = "baseService")
 public class BaseServiceImpl implements BaseService {
 
 	private static final Logger logger = LoggerFactory.getLogger(BaseServiceImpl.class);
