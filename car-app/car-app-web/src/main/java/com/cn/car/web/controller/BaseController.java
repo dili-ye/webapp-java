@@ -45,7 +45,7 @@ public class BaseController {
 	 */
 	@RequestMapping(value = "/default-execute")
 	public Response<?> execute(HttpServletRequest request) {
-		return service(Request.of(request));
+		return service(Request.of("default",request));
 	}
 
 	protected Response<?> service(Request request) {

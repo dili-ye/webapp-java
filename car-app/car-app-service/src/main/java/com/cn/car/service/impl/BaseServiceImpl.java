@@ -12,7 +12,6 @@ import com.alibaba.fastjson.JSON;
 import com.cn.car.service.BaseService;
 import com.cn.car.service.context.ServiceJumper;
 import com.cn.commons.annotation.AppService;
-import com.cn.commons.constants.ServerConstants;
 import com.cn.commons.dto.Request;
 import com.cn.commons.dto.Response;
 import com.google.common.collect.Maps;
@@ -23,23 +22,19 @@ public class BaseServiceImpl implements BaseService {
 	private static final Logger logger = LoggerFactory.getLogger(BaseServiceImpl.class);
 
 	protected Map<String, Method> methods = Maps.newHashMap();
-	
+
 	@Resource
 	ServiceJumper jumper;
 
 	@Override
 	public boolean canService(Request request) {
 		logger.info("request:{}", JSON.toJSONString(request));
-		Map<String, String> data = request.getContext();
-		if (data != null && data.size() > 0) {
-			return methods.containsKey(data.get(ServerConstants.ACTION_TYPE));
-		}
-		return false;
+		return methods.containsKey(request.getActionType());
 	}
 
 	@Override
 	public Response<?> service(Request request) {
-		String actionType = request.getContext().get(ServerConstants.ACTION_TYPE);
+		String actionType = request.getActionType();
 		Method method = methods.get(actionType);
 		try {
 			Object invoke = method.invoke(this, request);
