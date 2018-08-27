@@ -69,13 +69,12 @@ public class ServiceJumper {
 	}
 	
 	/**
-	 * 用于fileService的跳转
-	 * @param service
-	 * @param actionType
+	 * @param serviceType：  因为取不到class类型的值，所以这里就按照serviceName去获取service，值为String类型
+	 * @param actionType：被handlerMethod修饰的方法名
 	 * @param request
 	 * @param response
 	 */
-	public void jump(Object serviceName, String actionType, HttpServletRequest request,
+	public void jump(String serviceName, String actionType, HttpServletRequest request,
 			HttpServletResponse response) {
 		FileService bean = fileServiceContext.getBean(serviceName);
 		bean.service(actionType, request, response);

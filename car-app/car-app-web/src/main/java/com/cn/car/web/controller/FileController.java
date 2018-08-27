@@ -26,25 +26,15 @@ public class FileController {
 	@Resource
 	ServiceJumper jumper;
 	
-	/**
-	 * 
-	 * @param request
-	 * @param response
-	 */
 	@RequestMapping(value = "/upload/{serviceType}/{actionType}", method = { RequestMethod.POST })
-	public void uploadFile(@PathVariable Object serviceType ,@PathVariable String actionType, HttpServletRequest request, HttpServletResponse response) {
+	public void uploadFile(@PathVariable String serviceType ,@PathVariable String actionType, HttpServletRequest request, HttpServletResponse response) {
 		jumper.jump(serviceType, actionType, request, response);
 		logger.info("service end");
 	}
-	/**
-	 * 
-	 * @param actionType
-	 * @param request
-	 * @param response
-	 */
+	
 	@RequestMapping(value = "/download/{serviceType}/{actionType}", method = { RequestMethod.POST ,RequestMethod.GET})
-	public void downloadFile(@PathVariable Object serviceType ,@PathVariable String actionType, HttpServletRequest request,
+	public void downloadFile(@PathVariable String serviceType ,@PathVariable String actionType, HttpServletRequest request,
 			HttpServletResponse response) {
-		
+		jumper.jump(serviceType, actionType, request, response);
 	}
 }
