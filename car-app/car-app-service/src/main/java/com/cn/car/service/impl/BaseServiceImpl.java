@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.cn.car.service.BaseService;
 import com.cn.car.service.context.ServiceJumper;
 import com.cn.commons.annotation.AppService;
+import com.cn.commons.annotation.HandlerMethod;
 import com.cn.commons.dto.Request;
 import com.cn.commons.dto.Response;
 import com.google.common.collect.Maps;
@@ -25,6 +26,16 @@ public class BaseServiceImpl implements BaseService {
 
 	@Resource
 	ServiceJumper jumper;
+	
+	/**
+	 * 示例
+	 * @param request
+	 * @return
+	 */
+	@HandlerMethod("default")
+	public Response<?> execute(Request request) {
+		return Response.of(request);
+	}
 
 	@Override
 	public boolean canService(Request request) {

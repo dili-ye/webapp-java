@@ -7,11 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.cn.car.service.BaseService;
+import com.cn.car.service.impl.BaseServiceImpl;
+import com.cn.commons.annotation.ExecuteService;
 import com.cn.commons.dto.Request;
 import com.cn.commons.dto.Response;
 
@@ -25,6 +28,7 @@ import org.springframework.stereotype.Controller;
  *
  */
 @Controller
+@ExecuteService(executeClasses = BaseServiceImpl.class)
 public class BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
@@ -44,13 +48,18 @@ public class BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/default-execute")
+	@ResponseBody
 	public Response<?> execute(HttpServletRequest request) {
-		return service(Request.of("default",request));
+		return service(Request.of("default", request));
 	}
 
 	protected Response<?> service(Request request) {
 		String requestData = JSON.toJSONString(request);
 		logger.info("request:{}", requestData);
+		if (services == null || services.length == 0) {
+			logger.info("no service in the controller:{}", this.getClass().getName());
+			throw new RuntimeException("no service error!!!");
+		}
 		for (BaseService service : services) {
 			if (service.canService(request)) {
 				try {
