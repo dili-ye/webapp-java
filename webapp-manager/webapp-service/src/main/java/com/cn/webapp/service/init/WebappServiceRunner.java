@@ -22,7 +22,7 @@ import com.alibaba.fastjson.JSON;
 import com.cn.webapp.commons.annotation.HandlerMethod;
 import com.cn.webapp.service.BaseService;
 import com.cn.webapp.service.FileService;
-import com.cn.webapp.service.context.BaseServiceContext;
+import com.cn.webapp.service.context.ServiceContext;
 import com.cn.webapp.service.context.FileServiceContext;
 import com.google.common.collect.Maps;
 
@@ -40,7 +40,7 @@ public class WebappServiceRunner implements ApplicationRunner {
 	private static final String BASE_METHOD_SERVICE = "service";
 
 	@Resource
-	BaseServiceContext serviceContext;
+	ServiceContext serviceContext;
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {

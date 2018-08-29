@@ -34,7 +34,7 @@ public class ServiceJumper {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceJumper.class);
 
 	@Resource
-	BaseServiceContext serviceContext;
+	ServiceContext serviceContext;
 
 	@Resource
 	FileServiceContext fileServiceContext;
