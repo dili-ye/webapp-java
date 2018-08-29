@@ -29,10 +29,10 @@ public class Request implements Serializable {
 	private int requestId;
 	private String userId;
 	private String uuid;
-	private String actionType;
+	private String actionName;
 	private Map<String, String> context;
 
-	public static final Request of(String actionType, HttpServletRequest request) {
+	public static final Request of(String actionName, HttpServletRequest request) {
 		Map<String, String[]> map = request.getParameterMap();
 		Map<String, String> data = Maps.newHashMap();
 		String userId = null;
@@ -52,7 +52,7 @@ public class Request implements Serializable {
 			}
 		}
 		return Request.builder().requestId(request.hashCode()).uuid(UUIDUtil.getUUID32()).context(data).userId(userId)
-				.actionType(actionType).build();
+				.actionName(actionName).build();
 	}
 
 	public String putParam(String key, String value) {

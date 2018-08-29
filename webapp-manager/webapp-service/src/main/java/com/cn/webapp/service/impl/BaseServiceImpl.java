@@ -41,12 +41,12 @@ public class BaseServiceImpl implements BaseService {
 	@Override
 	public boolean canService(Request request) {
 		logger.info("request:{}", JSON.toJSONString(request));
-		return methods.containsKey(request.getActionType());
+		return methods.containsKey(request.getActionName());
 	}
 
 	@Override
 	public Response<?> service(Request request) {
-		String actionType = request.getActionType();
+		String actionType = request.getActionName();
 		Method method = methods.get(actionType);
 		try {
 			Object invoke = method.invoke(this, request);
