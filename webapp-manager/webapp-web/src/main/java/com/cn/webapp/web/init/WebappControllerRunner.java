@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSON;
 import com.cn.webapp.commons.annotation.ExecuteService;
 import com.cn.webapp.service.BaseService;
-import com.cn.webapp.service.context.BaseServiceContext;
+import com.cn.webapp.service.context.ServiceContext;
 import com.cn.webapp.web.context.ControllerContext;
 import com.cn.webapp.web.controller.BaseController;
 import com.google.common.collect.Sets;
@@ -33,7 +33,7 @@ public class WebappControllerRunner implements ApplicationRunner {
 	ControllerContext controllerContext;
 
 	@Resource
-	BaseServiceContext serviceContext;
+	ServiceContext serviceContext;
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {

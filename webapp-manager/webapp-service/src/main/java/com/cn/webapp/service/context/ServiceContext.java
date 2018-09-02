@@ -22,9 +22,9 @@ import com.google.common.collect.Sets;
 
 @Component(value = "baseServiceContext")
 @Order(50)
-public class BaseServiceContext implements ApplicationContextAware {
+public class ServiceContext implements ApplicationContextAware {
 
-	private static final Logger logger = LoggerFactory.getLogger(BaseServiceContext.class);
+	private static final Logger logger = LoggerFactory.getLogger(ServiceContext.class);
 
 	private ApplicationContext applicationContext;
 
