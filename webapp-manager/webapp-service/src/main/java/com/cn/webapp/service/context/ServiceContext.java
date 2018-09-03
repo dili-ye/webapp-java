@@ -9,26 +9,20 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.cn.webapp.commons.annotation.AppService;
+import com.cn.webapp.commons.context.CommonsContext;
 import com.cn.webapp.service.BaseService;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 @Component(value = "baseServiceContext")
 @Order(50)
-public class ServiceContext implements ApplicationContextAware {
+public class ServiceContext extends CommonsContext<BaseService> {
 
 	private static final Logger logger = LoggerFactory.getLogger(ServiceContext.class);
-
-	private ApplicationContext applicationContext;
-
-	private Map<String, BaseService> beans = Maps.newHashMap();
 
 	private Map<Long, BaseService> idServices = Maps.newHashMap();
 
@@ -38,12 +32,8 @@ public class ServiceContext implements ApplicationContextAware {
 
 	@PostConstruct
 	public void init() {
-		beans = applicationContext.getBeansOfType(BaseService.class, false, true);
-		if (beans == null) {
-			beans = Maps.newHashMap();
-			return;
-		}
-		beans = beans.entrySet().stream().filter(bean -> {
+		super.init();
+		beanMap = beanMap.entrySet().stream().filter(bean -> {
 			BaseService service = bean.getValue();
 			AppService component = service.getClass().getAnnotation(AppService.class);
 			if (component != null && component.enabled()) {
@@ -82,7 +72,7 @@ public class ServiceContext implements ApplicationContextAware {
 
 	public Collection<BaseService> getBeans(Object[] beanTypes) {
 		if (beanTypes == null || beanTypes.length == 0) {
-			return beans.values();
+			return beanMap.values();
 		}
 		Set<BaseService> services = Sets.newHashSet();
 		for (Object beanType : beanTypes) {
@@ -91,10 +81,6 @@ public class ServiceContext implements ApplicationContextAware {
 			}
 		}
 		return services;
-	}
-
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
 	}
 
 }

@@ -9,26 +9,20 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.cn.webapp.commons.annotation.AppService;
+import com.cn.webapp.commons.context.CommonsContext;
 import com.cn.webapp.service.FileService;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 @Component(value = "fileServiceContext")
 @Order(50)
-public class FileServiceContext implements ApplicationContextAware {
+public class FileServiceContext extends CommonsContext<FileService> {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileServiceContext.class);
-
-	private ApplicationContext applicationContext;
-
-	private Map<String, FileService> beans = Maps.newHashMap();
 
 	private Map<Long, FileService> idServices = Maps.newHashMap();
 
@@ -38,12 +32,8 @@ public class FileServiceContext implements ApplicationContextAware {
 
 	@PostConstruct
 	public void init() {
-		beans = applicationContext.getBeansOfType(FileService.class, false, true);
-		if (beans == null) {
-			beans = Maps.newHashMap();
-			return;
-		}
-		beans = beans.entrySet().stream().filter(bean -> {
+		super.init();
+		beanMap = beanMap.entrySet().stream().filter(bean -> {
 			FileService service = bean.getValue();
 			AppService component = service.getClass().getAnnotation(AppService.class);
 			if (component != null && component.enabled()) {
@@ -55,7 +45,7 @@ public class FileServiceContext implements ApplicationContextAware {
 			logger.info("service :{} enabled is false", service.getClass().getName());
 			return false;
 		}).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
-		logger.info("service init end");
+		logger.info("fileServiceContext init end");
 	}
 
 	public FileService getBean(Object beanType) {
@@ -82,7 +72,7 @@ public class FileServiceContext implements ApplicationContextAware {
 
 	public Collection<FileService> getBeans(Object[] beanTypes) {
 		if (beanTypes == null || beanTypes.length == 0) {
-			return beans.values();
+			return beanMap.values();
 		}
 		Set<FileService> services = Sets.newHashSet();
 		for (Object beanType : beanTypes) {
@@ -93,7 +83,4 @@ public class FileServiceContext implements ApplicationContextAware {
 		return services;
 	}
 
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
 }

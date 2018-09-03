@@ -54,7 +54,7 @@ public class WebappControllerRunner implements ApplicationRunner {
 	 * 初始化Controller中的service
 	 */
 	protected void initBaseController() {
-		Collection<BaseController> beans = controllerContext.getBeans();
+		Collection<BaseController> beans = controllerContext.getBeans(null);
 		for (BaseController controller : beans) {
 			Class<?> clazz = controller.getClass();
 			ExecuteService controllerExecutors = clazz.getAnnotation(ExecuteService.class);
