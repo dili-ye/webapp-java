@@ -9,7 +9,17 @@ function sendUrl(t) {
 		$.post(basePath + "/" + service + "/findOneTitleMsg", data, function(
 				result) {
 			console.info(result);
-			$(t).addAttr("onblur", func);
+			if (result.status == 200) {
+				var data = JSON.parse(result.data);
+				console.log(data);
+				$("#wordcloud").attr(
+						"src",
+						basePath + "file/download?serviceType=default&picPath="
+								+ data.picPath);
+			} else {
+				alert("error!!!");
+			}
+			$(t).attr("onblur", "sendUrl(this)");
 		});
 	}
 }

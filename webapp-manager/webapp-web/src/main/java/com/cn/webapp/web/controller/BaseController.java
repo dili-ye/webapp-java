@@ -58,6 +58,7 @@ public class BaseController {
 
 	protected Response<?> service(Request request) {
 		String requestData = JSON.toJSONString(request);
+		long startTime = System.currentTimeMillis();
 		logger.info("request:{}", requestData);
 		if (services == null || services.length == 0) {
 			logger.info("no service in the controller:{}", this.getClass().getName());
@@ -67,6 +68,7 @@ public class BaseController {
 			if (service.canService(request)) {
 				try {
 					Response<?> resp = service.service(request);
+					resp.setTime(System.currentTimeMillis() - startTime);
 					logger.info("service execute success, response data:{}", JSON.toJSONString(resp));
 					return resp;
 				} catch (Exception e) {
