@@ -30,13 +30,15 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 @ExecuteService(executeClasses = BaseServiceImpl.class)
+@RequestMapping
 public class BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
 	BaseService[] services;
 
-	@RequestMapping(value = "/{page}")
+	@RequestMapping(value = "/{page}", method = { RequestMethod.GET })
 	public String page(@PathVariable String page, HttpServletRequest request) {
+		logger.info("go to page .....{}", page);
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/";
 		request.setAttribute("basePath", basePath);
 		return page;
@@ -79,7 +81,8 @@ public class BaseController {
 	/**
 	 * 500统一异常处理
 	 * 
-	 * @param exception exception
+	 * @param exception
+	 *            exception
 	 * @return
 	 */
 	@ExceptionHandler({ RuntimeException.class })
@@ -95,7 +98,8 @@ public class BaseController {
 	/**
 	 * 404统一异常处理
 	 * 
-	 * @param exception exception
+	 * @param exception
+	 *            exception
 	 * @return
 	 */
 	@ExceptionHandler({ Exception.class })

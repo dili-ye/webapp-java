@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.cn.webapp.service.FileService;
 import com.cn.webapp.service.context.ServiceJumper;
 
 /**
@@ -22,7 +23,9 @@ import com.cn.webapp.service.context.ServiceJumper;
 @Controller("/file")
 public class FileController {
 	private static final Logger logger = LoggerFactory.getLogger(FileController.class);
-
+	
+	FileService[] services;
+	
 	@Resource
 	ServiceJumper jumper;
 

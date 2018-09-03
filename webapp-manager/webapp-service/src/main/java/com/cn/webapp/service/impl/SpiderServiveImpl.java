@@ -6,7 +6,7 @@ import com.cn.webapp.commons.dto.Request;
 import com.cn.webapp.commons.dto.Response;
 import com.cn.webapp.proxy.BaiduTiebaProxy;
 
-public class BaiduTiebaSpiderImpl extends BaseServiceImpl {
+public class SpiderServiveImpl extends BaseServiceImpl {
 
 	@Reserved
 	BaiduTiebaProxy baiduTiebaProxy;

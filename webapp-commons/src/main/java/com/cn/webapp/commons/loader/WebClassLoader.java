@@ -41,8 +41,12 @@ public class WebClassLoader extends ClassLoader {
 		}
 		for (File f : lists) {
 			String name = f.getName();
-			name = name.substring(0, f.getName().indexOf(".class")).replace(name.charAt(0) + "",
-					new String(name.charAt(0) + "").toLowerCase());
+			try {
+				name = name.substring(0, f.getName().indexOf(".class")).replace(name.charAt(0) + "",
+						new String(name.charAt(0) + "").toLowerCase());
+			} catch (Exception e) {
+				name = name.replace(name.charAt(0) + "", new String(name.charAt(0) + "").toLowerCase());
+			}
 			Class<?> c = null;
 			try {
 				c = Class.forName(loader.convert(f.getAbsolutePath()));

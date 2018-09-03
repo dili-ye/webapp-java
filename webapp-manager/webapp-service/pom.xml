@@ -13,7 +13,6 @@
 			<groupId>com.cn.webapp</groupId>
 			<artifactId>webapp-proxy</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.cn.webapp</groupId>

@@ -76,7 +76,7 @@ public class WebappControllerRunner implements ApplicationRunner {
 							controller.getClass().getName(), serviceTypes.size());
 					break;
 				} catch (Exception e) {
-					logger.info("service init error, exception :{}", JSON.toJSONString(e));
+					logger.info("service init error, class is :{}, ", controller.getClass().getName());
 				}
 			}
 		}
