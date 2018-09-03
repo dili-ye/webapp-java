@@ -1,14 +1,20 @@
 package com.cn.webapp.service.impl;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
 import com.cn.webapp.commons.annotation.AppService;
 import com.cn.webapp.service.FileService;
 import com.google.common.collect.Maps;
@@ -26,6 +32,17 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	public void service(String actionType, HttpServletRequest request, HttpServletResponse response) {
-		// TODO
+		String picPath = request.getParameter("picPath");
+		File f = new File(picPath);
+		try {
+			ServletOutputStream outputStream = response.getOutputStream();
+			while (f.exists()) {
+				BufferedImage bi = ImageIO.read(f);
+				ImageIO.write(bi, "png", outputStream);
+				return;
+			}
+		} catch (IOException e) {
+			logger.info("file read error:{}", JSON.toJSONString(e));
+		}
 	}
 }

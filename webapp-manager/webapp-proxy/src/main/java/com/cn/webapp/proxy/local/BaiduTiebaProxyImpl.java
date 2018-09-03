@@ -3,11 +3,13 @@ package com.cn.webapp.proxy.local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cn.webapp.commons.annotation.ReserveProxy;
 import com.cn.webapp.commons.dto.Request;
 import com.cn.webapp.commons.dto.Response;
 import com.cn.webapp.commons.socket.SocketClient;
 import com.cn.webapp.proxy.BaiduTiebaProxy;
 
+@ReserveProxy
 public class BaiduTiebaProxyImpl implements BaiduTiebaProxy {
 
 	private static final Logger logger = LoggerFactory.getLogger(BaiduTiebaProxyImpl.class);

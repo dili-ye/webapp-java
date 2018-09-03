@@ -16,7 +16,7 @@ import com.cn.webapp.proxy.Proxy;
 
 @Component("proxyContext")
 public class ProxyContext extends CommonsContext<Proxy> {
-	private static final String proxyPackage = "com.webapp.web.proxy";
+	private static final String proxyPackage = "com.cn.webapp.proxy";
 
 	@PostConstruct
 	public void init() {
@@ -26,8 +26,12 @@ public class ProxyContext extends CommonsContext<Proxy> {
 
 	// 类加载器加载
 	void initResolve() {
-		String path = this.getClass().getClassLoader().getResource("").getPath();
-		File f = new File(path + File.separator + proxyPackage.replaceAll("\\.", "/"));
+		String path = this.getClass().getResource("").getPath();
+		String name = this.getClass().getName();
+		String simpleName = this.getClass().getSimpleName();
+		name = name.replaceAll("\\.", "/").replace("/"+simpleName, "");
+		path = path.replace(name, "");
+		File f = new File(path);
 		Map<String, Object> proxys = WebClassLoader.createObjectsByLocation(f);
 		for (Iterator<Entry<String, Object>> it = proxys.entrySet().iterator(); it.hasNext();) {
 			Entry<String, Object> e = it.next();

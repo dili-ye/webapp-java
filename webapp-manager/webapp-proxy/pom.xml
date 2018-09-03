@@ -8,4 +8,11 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>webapp-proxy</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>com.cn.webapp</groupId>
+			<artifactId>webapp-commons</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 </project>

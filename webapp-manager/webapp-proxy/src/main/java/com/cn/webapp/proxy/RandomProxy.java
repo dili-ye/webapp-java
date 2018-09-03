@@ -8,9 +8,9 @@ import com.cn.webapp.commons.dto.Response;
 
 @FeignClient("app-service")
 @RequestMapping("/random-server")
-public interface RandomProxy {
-	
+public interface RandomProxy extends Proxy {
+
 	@RequestMapping("/create")
 	public Response<?> create(Request request);
-	
+
 }

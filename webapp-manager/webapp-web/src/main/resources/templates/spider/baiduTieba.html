@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8"/>
+<meta charset="UTF-8" />
 <title>baidu_spider</title>
-<script type="text/javascript" src='js/jquery.min.js'></script>
-<script type="text/javascript">
-	function sendUrl(t){
-		$(t).val();
-	}
+<script type="text/javascript" src='/js/jquery.min.js'></script>
+<script type="text/javascript" th:inline="javascript">
+	var basePath = [[${basePath}]];
+	var service = [[${service}]];
 </script>
+<script type="text/javascript" src='/js/spider/spider.js'></script>
 </head>
 <body>
 	<div>
-		<input type="text" onblur='sendText(this)'/>
+		<input type="text" onblur='sendUrl(this)' />
 	</div>
+	<div></div>
 	<div>
-		
-	</div>
-	<div>
-		<cavans></cavans>
+		<img id="wordcloud" alt="wordcloud" src="" />
 	</div>
 </body>
 </html>

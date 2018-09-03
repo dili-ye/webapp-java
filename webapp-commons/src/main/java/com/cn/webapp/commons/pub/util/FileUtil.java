@@ -20,7 +20,9 @@ public class FileUtil {
 				files.addAll(parseDir(file));
 			}
 		} else {
-			files.add(root);
+			if(root.getName().endsWith("class")) {
+				files.add(root);
+			}
 		}
 		return files;
 	}

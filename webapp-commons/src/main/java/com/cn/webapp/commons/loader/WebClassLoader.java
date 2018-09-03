@@ -12,18 +12,6 @@ import com.google.common.collect.Maps;
 
 public class WebClassLoader extends ClassLoader {
 
-	private static final WebClassLoader loader = new WebClassLoader();
-
-	public static Class<?> findClassByNameAndLocation(String name) throws ClassNotFoundException {
-		byte[] datas = loader.loadClassData(name); // 将class文件的数据读入到byte数组中
-		name = loader.convert(name);
-		if (name.endsWith("Impl")) {
-			return loader.defineClass(name, datas, 0, datas.length);// 通过byte数组加载Class对象
-		} else {
-			return null;
-		}
-	}
-
 	/**
 	 * 
 	 * @param pack
@@ -33,7 +21,6 @@ public class WebClassLoader extends ClassLoader {
 	 * @return
 	 */
 	public static Map<String, Object> createObjectsByLocation(File location) {
-		// 列出所有的.class文件
 		List<File> lists = FileUtil.parseDir(location);
 		Map<String, Object> map = Maps.newHashMap();
 		if (lists.size() == 0) {
@@ -49,7 +36,7 @@ public class WebClassLoader extends ClassLoader {
 			}
 			Class<?> c = null;
 			try {
-				c = Class.forName(loader.convert(f.getAbsolutePath()));
+				c = Class.forName(convert(location.getAbsolutePath(), f.getAbsolutePath()));
 				if (!c.isInterface()) {
 					map.put(name, c.newInstance());
 				}
@@ -92,9 +79,8 @@ public class WebClassLoader extends ClassLoader {
 		return loadClassData(new File(location, name));
 	}
 
-	private String convert(String pack) {
-		String path = new File(this.getClass().getClassLoader().getResource("").getPath()).getAbsolutePath();
-		String result = pack.replace(path + File.separator, "");
+	private static String convert(String dir,String filePath) {
+		String result = filePath.replace(dir + File.separator, "");
 		result = result.replace('/', '.');
 		result = result.replace('\"', '.');// 将所有的\转成.
 		result = result.replace('\\', '.');

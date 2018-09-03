@@ -66,7 +66,9 @@ public class BaseController {
 		for (BaseService service : services) {
 			if (service.canService(request)) {
 				try {
-					return service.service(request);
+					Response<?> resp = service.service(request);
+					logger.info("service execute success, response data:{}", JSON.toJSONString(resp));
+					return resp;
 				} catch (Exception e) {
 					logger.info("service execute error, cause exception is :{}", JSON.toJSONString(e.getMessage()));
 					throw new RuntimeException(
@@ -81,8 +83,7 @@ public class BaseController {
 	/**
 	 * 500统一异常处理
 	 * 
-	 * @param exception
-	 *            exception
+	 * @param exception exception
 	 * @return
 	 */
 	@ExceptionHandler({ RuntimeException.class })
@@ -98,8 +99,7 @@ public class BaseController {
 	/**
 	 * 404统一异常处理
 	 * 
-	 * @param exception
-	 *            exception
+	 * @param exception exception
 	 * @return
 	 */
 	@ExceptionHandler({ Exception.class })
