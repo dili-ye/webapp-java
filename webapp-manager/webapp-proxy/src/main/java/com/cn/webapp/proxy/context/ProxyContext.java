@@ -7,25 +7,20 @@ import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import com.cn.webapp.commons.annotation.ReserveProxy;
+import com.cn.webapp.commons.context.CommonsContext;
 import com.cn.webapp.commons.loader.WebClassLoader;
 import com.cn.webapp.proxy.Proxy;
-import com.google.common.collect.Maps;
 
 @Component("proxyContext")
-public class ProxyContext implements ApplicationContextAware {
-	private ApplicationContext applicationContext;
+public class ProxyContext extends CommonsContext<Proxy> {
 	private static final String proxyPackage = "com.webapp.web.proxy";
-	private Map<String, Proxy> proxys = Maps.newHashMap();
 
 	@PostConstruct
-	void init() {
-		proxys = applicationContext.getBeansOfType(Proxy.class, false, true);
+	public void init() {
+		super.init();
 		initResolve();
 	}
 
@@ -39,7 +34,7 @@ public class ProxyContext implements ApplicationContextAware {
 			try {
 				Object val = e.getValue();
 				if (val instanceof Proxy && val.getClass().getAnnotation(ReserveProxy.class) != null) {
-					this.proxys.put(e.getKey(), Proxy.class.cast(val));
+					this.beanMap.put(e.getKey(), Proxy.class.cast(val));
 				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -47,21 +42,15 @@ public class ProxyContext implements ApplicationContextAware {
 		}
 	}
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
-
-	public Map<String, Proxy> getBeans() {
-		return proxys;
-	}
-
-	public Proxy getBean(Class<?> clazz) {
-		Iterator<Proxy> iterator = proxys.values().iterator();
-		while(iterator.hasNext()) {
-			Proxy proxy = iterator.next();
-			if (clazz.isAssignableFrom(proxy.getClass())) {
-				return proxy;
+	public Proxy getBean(Object beanType) {
+		if (beanType instanceof Class) {
+			Class<?> clazz = Class.class.cast(beanType);
+			Iterator<Proxy> iterator = beanMap.values().iterator();
+			while (iterator.hasNext()) {
+				Proxy proxy = iterator.next();
+				if (clazz.isAssignableFrom(proxy.getClass())) {
+					return proxy;
+				}
 			}
 		}
 		return null;

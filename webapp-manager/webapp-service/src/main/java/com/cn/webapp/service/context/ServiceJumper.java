@@ -42,9 +42,12 @@ public class ServiceJumper {
 	/**
 	 * 服务层跳转。
 	 * 
-	 * @param service： id、name、serviceClass
-	 * @param methodName： handlerMethod。value()
-	 * @param request： data
+	 * @param service：
+	 *            id、name、serviceClass
+	 * @param methodName：
+	 *            handlerMethod。value()
+	 * @param request：
+	 *            data
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -72,9 +75,9 @@ public class ServiceJumper {
 	}
 
 	/**
-	 * @param          serviceType：
-	 *                 因为取不到class类型的值，所以这里就按照serviceName去获取service，值为String类型
-	 * @param          actionType：被handlerMethod修饰的方法名
+	 * @param serviceType：
+	 *            因为取不到class类型的值，所以这里就按照serviceName去获取service，值为String类型
+	 * @param actionType：被handlerMethod修饰的方法名
 	 * @param request
 	 * @param response
 	 */

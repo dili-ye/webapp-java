@@ -20,6 +20,9 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.cn.webapp.commons.annotation.HandlerMethod;
+import com.cn.webapp.commons.annotation.Reserved;
+import com.cn.webapp.proxy.Proxy;
+import com.cn.webapp.proxy.context.ProxyContext;
 import com.cn.webapp.service.BaseService;
 import com.cn.webapp.service.FileService;
 import com.cn.webapp.service.context.ServiceContext;
@@ -42,11 +45,15 @@ public class WebappServiceRunner implements ApplicationRunner {
 	@Resource
 	ServiceContext serviceContext;
 
+	@Resource
+	ProxyContext proxyContext;
+
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		if (logger.isDebugEnabled()) {
 			logger.debug(JSON.toJSONString(args));
 		}
+		resolveProxy();
 		initBaseService();
 		initFileService();
 	}
@@ -110,6 +117,27 @@ public class WebappServiceRunner implements ApplicationRunner {
 				break;
 			} catch (Exception e) {
 				logger.info("methods init error, class is :{}", service.getClass().getName());
+			}
+		}
+	}
+
+	protected void resolveProxy() {
+		Collection<BaseService> services = serviceContext.getBeans(null);
+		if (services.size() == 0) {
+			return;
+		}
+		for (BaseService service : services) {
+			Field[] fields = service.getClass().getDeclaredFields();
+			for (Field f : fields) {
+				if (f.getAnnotation(Reserved.class) != null) {
+					Proxy bean = proxyContext.getBean(f.getType());
+					f.setAccessible(true);
+					try {
+						f.set(service, f.getType().cast(bean));
+					} catch (Exception e) {
+					}
+					f.setAccessible(false);
+				}
 			}
 		}
 

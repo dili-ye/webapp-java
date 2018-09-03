@@ -1,5 +1,6 @@
 package com.cn.webapp.spider
 
+import org.openqa.selenium.chrome.ChromeDriver;
 
 headers = {}
 
@@ -18,4 +19,7 @@ headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/53
 payLoad = {
 	
 }
+
+
+def driver = new ChromeDriver()
 
