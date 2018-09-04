@@ -40,7 +40,6 @@ public class BaseServiceImpl implements BaseService {
 
 	@Override
 	public boolean canService(Request request) {
-		logger.info("request:{}", JSON.toJSONString(request));
 		return methods.containsKey(request.getActionName());
 	}
 

@@ -23,8 +23,13 @@ public class BaiduTiebaProxyImpl implements BaiduTiebaProxy {
 		String url = request.getContext().get("url");
 		logger.info("start request data:{}", url);
 		if (url != null) {
-			String msg = client.sendMsg(url);
-			return Response.of(msg);
+			try {
+				String msg = client.sendMsg(url);
+				logger.info("socket response:{}", msg);
+				return Response.of(msg);
+			} catch (Exception e) {
+
+			}
 		}
 		return Response.of(199);
 	}

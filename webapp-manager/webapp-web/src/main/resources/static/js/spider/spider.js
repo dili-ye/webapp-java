@@ -1,6 +1,5 @@
 function sendUrl(t) {
 	var url = $(t).val();
-	console.log(url);
 	var func = $(t).removeAttr("onblur");
 	var data = {
 		"url" : url
@@ -11,11 +10,23 @@ function sendUrl(t) {
 			console.info(result);
 			if (result.status == 200) {
 				var data = JSON.parse(result.data);
-				console.log(data);
-				$("#wordcloud").attr(
-						"src",
-						basePath + "file/download?serviceType=default&picPath="
-								+ data.picPath);
+				var imgSrc = basePath
+						+ "file/download?serviceType=default&picPath="
+						+ encodeURI(data.picPath);
+				var img = new Image();
+				img.src = imgSrc;
+				img.onload = function() {
+					console.log("load img .....src:" + this.src);
+					if (this.width > 0 && this.height > 0) {
+						var scale = 250 / this.width;
+						var width = 250;
+						var height = this.height / scale;
+						$("#wordcloud").append("<img src='" + imgSrc + "' width='" + width
+										+ "px' height='" + height + "px'/>");
+					} else {
+						this.src = imgSrc;
+					}
+				}
 			} else {
 				alert("error!!!");
 			}

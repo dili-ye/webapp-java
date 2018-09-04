@@ -36,11 +36,25 @@ public class FileServiceImpl implements FileService {
 		File f = new File(picPath);
 		try {
 			ServletOutputStream outputStream = response.getOutputStream();
-			while (f.exists()) {
-				BufferedImage bi = ImageIO.read(f);
-				ImageIO.write(bi, "png", outputStream);
-				return;
+			BufferedImage bi = null;
+			int getImgCount = 0;
+			while (bi == null) {
+				try {
+					bi = ImageIO.read(f);
+					getImgCount++;
+					if (bi != null || getImgCount > 8) {
+						break;
+					}
+				} catch (Exception e) {
+					logger.error("file read fail....getImgCount:{}", getImgCount);
+					try {
+						Thread.sleep(300);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+				}
 			}
+			ImageIO.write(bi, "png", outputStream);
 		} catch (IOException e) {
 			logger.info("file read error:{}", JSON.toJSONString(e));
 		}

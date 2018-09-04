@@ -28,17 +28,17 @@ public class SocketClient {
 		InputStream inputStream = null;
 		try {
 			outputStream = socket.getOutputStream();
-			outputStream.write(msg.getBytes());
+			outputStream.write(msg.getBytes("utf8"));
 			inputStream = socket.getInputStream();
 			StringBuffer sb = new StringBuffer();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "utf8"));
 			String s = null;
 			while ((s = reader.readLine()) != null) {
 				sb.append(s.trim());
 			}
 			socket.shutdownOutput();
 			return sb.toString();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
