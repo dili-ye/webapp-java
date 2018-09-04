@@ -34,8 +34,9 @@ public class FileServiceImpl implements FileService {
 	public void service(String actionType, HttpServletRequest request, HttpServletResponse response) {
 		String picPath = request.getParameter("picPath");
 		File f = new File(picPath);
+		ServletOutputStream outputStream = null;
 		try {
-			ServletOutputStream outputStream = response.getOutputStream();
+			outputStream = response.getOutputStream();
 			BufferedImage bi = null;
 			int getImgCount = 0;
 			while (bi == null) {
@@ -47,16 +48,27 @@ public class FileServiceImpl implements FileService {
 					}
 				} catch (Exception e) {
 					logger.error("file read fail....getImgCount:{}", getImgCount);
-					try {
-						Thread.sleep(300);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
+
+				}
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
 				}
 			}
-			ImageIO.write(bi, "png", outputStream);
+			if (bi != null) {
+				ImageIO.write(bi, "png", outputStream);
+			}
 		} catch (IOException e) {
 			logger.info("file read error:{}", JSON.toJSONString(e));
+		} finally {
+			if (outputStream != null) {
+				try {
+					outputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
