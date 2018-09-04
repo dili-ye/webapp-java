@@ -20,7 +20,7 @@ function sendUrl(t) {
 					if (this.width > 0 && this.height > 0) {
 						var scale = 250 / this.width;
 						var width = 250;
-						var height = this.height / scale;
+						var height = this.height * scale;
 						$("#wordcloud").append("<img src='" + imgSrc + "' width='" + width
 										+ "px' height='" + height + "px'/>");
 					} else {
