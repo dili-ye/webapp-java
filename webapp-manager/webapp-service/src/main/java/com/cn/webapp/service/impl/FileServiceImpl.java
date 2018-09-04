@@ -40,9 +40,9 @@ public class FileServiceImpl implements FileService {
 			int getImgCount = 0;
 			while (bi == null) {
 				try {
-					bi = ImageIO.read(f);
 					getImgCount++;
-					if (bi != null || getImgCount > 8) {
+					bi = ImageIO.read(f);
+					if (bi != null || getImgCount > 3000 / 300) {
 						break;
 					}
 				} catch (Exception e) {
