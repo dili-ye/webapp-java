@@ -4,7 +4,9 @@
 <meta charset="UTF-8" />
 <title>baidu_spider</title>
 <script type="text/javascript" src='/js/jquery.min.js'></script>
+<script type="text/javascript" src='/js/echarts.js'></script>
 <script type="text/javascript" th:inline="javascript">
+	var result_data_all = {};
 	var basePath = [[${basePath}]];
 	var service = [[${service}]];
 </script>
@@ -16,11 +18,17 @@
 	</div>
 	<div id="spiderData">
 		<div id="tiebaUser">
+			<select onchange="changeUserTable(this)">
+				<option value='show' selected="selected">show</option>
+				<option value='hide'>hide</option>
+			</select>
 			<table id='userTable'>
-
+				
 			</table>
 		</div>
 		<div id="wordcloud"></div>
+		<div id="cavans_div">
+		</div>
 	</div>
 </body>
 </html>

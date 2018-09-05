@@ -5,16 +5,21 @@ import com.cn.webapp.commons.annotation.HandlerMethod;
 import com.cn.webapp.commons.annotation.Reserved;
 import com.cn.webapp.commons.dto.Request;
 import com.cn.webapp.commons.dto.Response;
-import com.cn.webapp.proxy.BaiduTiebaProxy;
+import com.cn.webapp.proxy.SpiderProxy;
 
 @AppService(id = 2, name = "spiderService")
 public class SpiderServiveImpl extends BaseServiceImpl {
 
 	@Reserved
-	BaiduTiebaProxy baiduTiebaProxy;
+	SpiderProxy spiderProxy;
 
 	@HandlerMethod("findOneTitleMsg")
 	public Response<?> findOneTitleMsg(Request request) {
-		return baiduTiebaProxy.findOneTitleMsg(request);
+		return spiderProxy.findOneTitleMsg(request);
+	}
+
+	@HandlerMethod("findFemaleBras")
+	public Response<?> findFemaleBras(Request request) {
+		return spiderProxy.findFemaleBras(request);
 	}
 }

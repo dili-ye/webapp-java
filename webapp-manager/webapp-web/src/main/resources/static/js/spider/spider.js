@@ -4,11 +4,12 @@ function sendUrl(t) {
 	var data = {
 		"url" : url
 	};
-	if (url && url.length > 0) {
+	if (url && url.length > 0 && JSON.stringify(result_data_all) == "{}") {
 		$.post(basePath + "/" + service + "/findOneTitleMsg", data, function(
 				result) {
 			if (result.status == 200) {
 				var data = JSON.parse(result.data);
+				result_data_all = data;
 				console.info(data);
 				var imgSrc = basePath
 						+ "file/download?serviceType=default&picPath="
@@ -20,12 +21,20 @@ function sendUrl(t) {
 			}
 			$(t).attr("onblur", "sendUrl(this)");
 		});
+	}else{
+		var imgSrc = basePath
+				+ "file/download?serviceType=default&picPath="
+				+ encodeURI(result_data_all.picPath);
+		loadUserData(result_data_all.data);
+		loadImg(imgSrc);
 	}
 }
 
 function loadUserData(data) {
 	var index = 0;
 	var table = $("#userTable");
+	var male_count = 0;
+	var female_count = 0;
 	for (k in data) {
 		var tr;
 		if (index % 3 == 0) {
@@ -36,7 +45,8 @@ function loadUserData(data) {
 		var user = JSON.parse(k);
 		var content = data[k];
 		var user_div = $("<div></div>");
-		var img = $("<img src='" + user.head + "'/>");
+		var img = $("<img src='" + user.head
+				+ "' width='110px' height='110px'/>");
 		var a = $("<a></a>");
 		a.append(img);
 		var username = $("<a></a>");
@@ -63,6 +73,11 @@ function loadUserData(data) {
 		user_div.append(username);
 		td.append(user_div);
 		tr.append(td);
+		if (user.sex == "female") {
+			female_count++;
+		} else {
+			male_count++;
+		}
 		index++;
 	}
 }
@@ -83,4 +98,22 @@ function loadImg(imgSrc) {
 			this.src = imgSrc;
 		}
 	}
+}
+
+
+function changeUserTable(t){
+	var $this = $(this);
+	if($this.val() == 'show'){
+		$("#userTable").css("display","none");
+	}else{
+		$("#userTable").css("display","");
+	}
+}
+
+function create_lines(lines_data){
+	var line_cavans = $("<cavans></cavans>");
+}
+
+function create_pie(pie_data){
+	var pie_cavans = $("<cavans></cavans>");
 }

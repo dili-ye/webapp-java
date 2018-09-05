@@ -18,7 +18,7 @@ public class CommonsContext<T> implements ApplicationContextAware {
 
 	private static final Logger logger = LoggerFactory.getLogger(CommonsContext.class);
 
-	private ApplicationContext applicationContext;
+	protected ApplicationContext applicationContext;
 
 	protected Map<String, T> beanMap = Maps.newHashMap();
 

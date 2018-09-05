@@ -25,6 +25,7 @@
 		<module>webapp-web</module>
 		<module>webapp-service</module>
 		<module>webapp-proxy</module>
+		<module>webapp-dao</module>
 	</modules>
 
 	<dependencies>

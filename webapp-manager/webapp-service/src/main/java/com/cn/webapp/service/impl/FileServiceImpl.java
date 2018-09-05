@@ -48,7 +48,6 @@ public class FileServiceImpl implements FileService {
 					}
 				} catch (Exception e) {
 					logger.error("file read fail....getImgCount:{}", getImgCount);
-
 				}
 				try {
 					Thread.sleep(300);
