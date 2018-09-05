@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cn.webapp.commons.annotation.ReserveProxy;
 import com.cn.webapp.commons.dto.Request;
 import com.cn.webapp.commons.dto.Response;
@@ -20,9 +21,12 @@ public class SpiderProxyImpl implements SpiderProxy {
 	private static String IP = "localhost";
 	private static int PORT = 8888;
 	private static final String ACTION_TYPE = "actionType";
+	private static final String STATUS_CODE = "status";
+	private static final String MESSAGE_CODE = "message";
+	private static final String SUCCESS_CODE = "success";
+	private static final String ERROR_CODE = "error";
 
-	@Override
-	public Response<?> findOneTitleMsg(Request request) {
+	private Response<?> sendData(Request request) {
 		Map<String, String> context = request.getContext();
 		if (context.size() != 0) {
 			SocketClient client = new SocketClient(IP, PORT);
@@ -32,28 +36,27 @@ public class SpiderProxyImpl implements SpiderProxy {
 			try {
 				String msg = client.sendMsg(data);
 				logger.info("socket response:{}", msg);
+				JSONObject json = JSONObject.parseObject(msg);
+				if (json.getString(STATUS_CODE).equals(ERROR_CODE)) {
+					throw new RuntimeException(json.getString(MESSAGE_CODE));
+				}
 				return Response.of(msg);
 			} catch (Exception e) {
-
+				Response resp = Response.of(199);
+				resp.setException(e);
+				return resp;
 			}
 		}
 		return Response.of(199);
 	}
 
 	@Override
-	public Response<?> findFemaleBras(Request request) {
-		Map<String, String> context = request.getContext();
-		if (context.size() != 0) {
-			SocketClient client = new SocketClient(IP, PORT);
-			context.put(ACTION_TYPE, request.getActionName());
-			String data = JSON.toJSONString(context);
-			try {
-				String msg = client.sendMsg(data);
-				return Response.of(msg);
-			} catch (Exception e) {
-			}
-		}
-		return Response.of(199);
+	public Response<?> baiduTieba(Request request) {
+		return sendData(request);
 	}
 
+	@Override
+	public Response<?> findFemaleBras(Request request) {
+		return sendData(request);
+	}
 }

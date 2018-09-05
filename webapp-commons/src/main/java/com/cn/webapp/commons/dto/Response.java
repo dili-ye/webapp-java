@@ -59,7 +59,7 @@ public class Response<T> implements Serializable {
 	public static <T> Response of(T data) {
 		return Response.builder().status(200).data(data).build();
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Response [status=" + status + ", msg=" + msg + ", data=" + data.toString() + "]";

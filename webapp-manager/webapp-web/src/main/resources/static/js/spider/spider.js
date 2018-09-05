@@ -5,28 +5,22 @@ function sendUrl(t) {
 		"url" : url
 	};
 	if (url && url.length > 0 && JSON.stringify(result_data_all) == "{}") {
-		$.post(basePath + "/" + service + "/findOneTitleMsg", data, function(
-				result) {
-			if (result.status == 200) {
-				var data = JSON.parse(result.data);
-				result_data_all = data;
-				console.info(data);
-				var imgSrc = basePath
-						+ "file/download?serviceType=default&picPath="
-						+ encodeURI(data.picPath);
-				loadUserData(data.data);
-				loadImg(imgSrc);
-			} else {
-				alert("error!!!");
-			}
-			$(t).attr("onblur", "sendUrl(this)");
-		});
-	}else{
-		var imgSrc = basePath
-				+ "file/download?serviceType=default&picPath="
-				+ encodeURI(result_data_all.picPath);
-		loadUserData(result_data_all.data);
-		loadImg(imgSrc);
+		$.post(basePath + "/" + service + "/baiduTieba", data,
+				function(result) {
+					if (result && result.status == 200) {
+						var data = JSON.parse(result.data);
+						result_data_all = data;
+						var imgSrc = basePath
+								+ "file/download?serviceType=default&picPath="
+								+ encodeURI(data.picPath);
+						loadUserData(data.data);
+						console.info(imgSrc);
+						loadImg(imgSrc);
+					} else {
+						alert("error!!!");
+					}
+					$(t).attr("onblur", "sendUrl(this)");
+				});
 	}
 }
 
@@ -100,20 +94,19 @@ function loadImg(imgSrc) {
 	}
 }
 
-
-function changeUserTable(t){
-	var $this = $(this);
-	if($this.val() == 'show'){
-		$("#userTable").css("display","none");
-	}else{
-		$("#userTable").css("display","");
+function changeUserTable(t) {
+	var $this = $(t);
+	if ($this.val() == 'show') {
+		$("#userTable").css("display", "none");
+	} else {
+		$("#userTable").css("display", "");
 	}
 }
 
-function create_lines(lines_data){
+function create_lines(lines_data) {
 	var line_cavans = $("<cavans></cavans>");
 }
 
-function create_pie(pie_data){
+function create_pie(pie_data) {
 	var pie_cavans = $("<cavans></cavans>");
 }

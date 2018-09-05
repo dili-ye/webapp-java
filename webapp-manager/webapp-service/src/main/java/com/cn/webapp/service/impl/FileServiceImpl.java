@@ -42,8 +42,11 @@ public class FileServiceImpl implements FileService {
 			while (bi == null) {
 				try {
 					getImgCount++;
+					if (getImgCount > 3000 / 300) {
+						break;
+					}
 					bi = ImageIO.read(f);
-					if (bi != null || getImgCount > 3000 / 300) {
+					if (bi != null) {
 						break;
 					}
 				} catch (Exception e) {

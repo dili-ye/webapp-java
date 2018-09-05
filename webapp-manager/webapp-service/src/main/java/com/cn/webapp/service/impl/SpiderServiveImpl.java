@@ -13,9 +13,9 @@ public class SpiderServiveImpl extends BaseServiceImpl {
 	@Reserved
 	SpiderProxy spiderProxy;
 
-	@HandlerMethod("findOneTitleMsg")
-	public Response<?> findOneTitleMsg(Request request) {
-		return spiderProxy.findOneTitleMsg(request);
+	@HandlerMethod("baiduTieba")
+	public Response<?> baiduTieba(Request request) {
+		return spiderProxy.baiduTieba(request);
 	}
 
 	@HandlerMethod("findFemaleBras")
