@@ -1,7 +1,6 @@
 var baiduTieba = function() {
 
 	this.load = function(data) {
-		console.info(data);
 		loadUserData(data.data);
 		loadImg(data.picPath);
 	}

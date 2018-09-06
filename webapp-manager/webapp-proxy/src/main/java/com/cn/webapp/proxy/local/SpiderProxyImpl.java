@@ -42,12 +42,11 @@ public class SpiderProxyImpl implements SpiderProxy {
 				}
 				return Response.of(msg);
 			} catch (Exception e) {
-				Response resp = Response.of(199);
-				resp.setException(e);
-				return resp;
+				e.printStackTrace();
+				return Response.builder().exception(e).build();
 			}
 		}
-		return Response.of(199);
+		return Response.of(199, "empty context");
 	}
 
 	@Override
